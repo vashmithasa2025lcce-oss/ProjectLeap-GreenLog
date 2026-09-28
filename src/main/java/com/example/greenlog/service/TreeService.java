@@ -1,5 +1,5 @@
 package com.example.greenlog.service;
-
+import com.example.greenlog.repository.CheckInRepository;
 import com.example.greenlog.model.PlantationDrive;
 import com.example.greenlog.model.Tree;
 import com.example.greenlog.model.Volunteer;
@@ -10,21 +10,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class TreeService {
 
     private final TreeRepository treeRepository;
     private final PlantationDriveRepository driveRepository;
     private final VolunteerRepository volunteerRepository;
+    private final CheckInRepository checkInRepository;
 
     public TreeService(
             TreeRepository treeRepository,
             PlantationDriveRepository driveRepository,
-            VolunteerRepository volunteerRepository) {
+            VolunteerRepository volunteerRepository,
+            CheckInRepository checkInRepository) {
 
         this.treeRepository = treeRepository;
         this.driveRepository = driveRepository;
         this.volunteerRepository = volunteerRepository;
+        this.checkInRepository = checkInRepository;
     }
 
     public Tree createTree(
@@ -62,5 +66,37 @@ public class TreeService {
 
     public void deleteTree(Long id) {
         treeRepository.deleteById(id);
+    }
+    public double getSurvivalRate(Long driveId) {
+
+        PlantationDrive drive =
+                driveRepository.findById(driveId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Plantation drive not found"));
+
+        List<Tree> trees =
+                treeRepository.findByPlantationDrive(drive);
+
+        if (trees.isEmpty()) {
+            return 0.0;
+        }
+
+        long deadTrees = trees.stream()
+                .filter(tree ->
+                        checkInRepository.existsByTreeAndStatus(
+                                tree,
+                                com.example.greenlog.model.CheckIn.Status.DEAD))
+                .count();
+
+        long aliveTrees = trees.size() - deadTrees;
+
+        return ((double) aliveTrees / trees.size()) * 100;
+    }
+    public List<Tree> getTreesDueForCheckIn() {
+
+        return treeRepository
+                .findByNextCheckInDateLessThanEqual(
+                        java.time.LocalDate.now());
     }
 }
