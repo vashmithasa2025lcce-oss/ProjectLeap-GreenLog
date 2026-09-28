@@ -39,4 +39,8 @@ public class VolunteerController {
         volunteerService.deleteVolunteer(id);
         return "Volunteer deleted successfully";
     }
+    @GetMapping("/leaderboard")
+    public List<String> getLeaderboard() {
+        return volunteerService.getLeaderboard();
+    }
 }

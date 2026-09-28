@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GreenLog - Tree Plantation Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo">
+        🌱 GreenLog
+    </div>
+
+    <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#volunteers">Volunteers</a>
+        <a href="#drives">Drives</a>
+        <a href="#trees">Trees</a>
+        <a href="#checkins">Check-ins</a>
+        <a href="#reports">Reports</a>
+    </nav>
+
+</header>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="hero">
+
+    <div class="hero-content">
+
+        <h1>🌳 GreenLog</h1>
+
+        <h2>Tree Plantation Drive Tracker</h2>
+
+        <p>
+            Track plantation drives, volunteers, trees and
+            their survival status in one place.
+        </p>
+
+        <button onclick="loadDashboard()">
+            Refresh Dashboard
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STAT CARDS ================= -->
+
+<section class="stats">
+
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <h3>Volunteers</h3>
+        <p id="volunteerCount">0</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">🌱</div>
+        <h3>Trees</h3>
+        <p id="treeCount">0</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">🌳</div>
+        <h3>Plantation Drives</h3>
+        <p id="driveCount">0</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <h3>Check-ins</h3>
+        <p id="checkinCount">0</p>
+    </div>
+
+</section>
+
+
+<!-- ================= VOLUNTEERS ================= -->
+
+<section id="volunteers" class="section">
+
+    <div class="section-title">
+        <h2>👥 Volunteers</h2>
+        <p>Add and view plantation volunteers</p>
+    </div>
+
+    <div class="card">
+
+        <h3>Add Volunteer</h3>
+
+        <form id="volunteerForm">
+
+            <input
+                    type="text"
+                    id="volunteerName"
+                    placeholder="Volunteer name"
+                    required
+            >
+
+            <input
+                    type="email"
+                    id="volunteerEmail"
+                    placeholder="Email"
+                    required
+            >
+
+            <button type="submit">
+                Add Volunteer
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Volunteer List</h3>
+
+        <button onclick="loadVolunteers()">
+            Load Volunteers
+        </button>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody id="volunteerTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PLANTATION DRIVES ================= -->
+
+<section id="drives" class="section">
+
+    <div class="section-title">
+
+        <h2>🌳 Plantation Drives</h2>
+
+        <p>
+            Create and manage plantation drives
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Create Plantation Drive</h3>
+
+        <form id="driveForm">
+
+            <input
+                    type="text"
+                    id="driveName"
+                    placeholder="Drive name"
+                    required
+            >
+
+            <input
+                    type="text"
+                    id="driveLocation"
+                    placeholder="Location"
+                    required
+            >
+
+            <input
+                    type="date"
+                    id="driveDate"
+                    required
+            >
+
+            <button type="submit">
+                Create Drive
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Plantation Drive List</h3>
+
+        <button onclick="loadDrives()">
+            Load Drives
+        </button>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="driveTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TREES ================= -->
+
+<section id="trees" class="section">
+
+    <div class="section-title">
+
+        <h2>🌱 Trees</h2>
+
+        <p>
+            Register trees planted during drives
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Add Tree</h3>
+
+        <form id="treeForm">
+
+            <input
+                    type="text"
+                    id="treeSpecies"
+                    placeholder="Tree species"
+                    required
+            >
+
+            <input
+                    type="text"
+                    id="treeLocation"
+                    placeholder="Tree location"
+                    required
+            >
+
+            <label>
+                Planting Date
+            </label>
+
+            <input
+                    type="date"
+                    id="datePlanted"
+                    required
+            >
+
+            <label>
+                Next Check-in Date
+            </label>
+
+            <input
+                    type="date"
+                    id="nextCheckInDate"
+                    required
+            >
+
+            <input
+                    type="number"
+                    id="treeDriveId"
+                    placeholder="Plantation Drive ID"
+                    required
+            >
+
+            <input
+                    type="number"
+                    id="treeVolunteerId"
+                    placeholder="Volunteer ID"
+                    required
+            >
+
+            <button type="submit">
+                Add Tree
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Tree List</h3>
+
+        <button onclick="loadTrees()">
+            Load Trees
+        </button>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Species</th>
+                    <th>Location</th>
+                    <th>Plant Date</th>
+                    <th>Next Check-in</th>
+                    <th>Action</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="treeTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CHECK-IN ================= -->
+
+<section id="checkins" class="section">
+
+    <div class="section-title">
+
+        <h2>📋 Tree Check-in</h2>
+
+        <p>
+            Record the survival status of planted trees
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Add Tree Check-in</h3>
+
+        <form id="checkinForm">
+
+            <input
+                    type="number"
+                    id="checkinTreeId"
+                    placeholder="Tree ID"
+                    required
+            >
+
+            <select id="checkinStatus" required>
+
+                <option value="">
+                    Select Status
+                </option>
+
+                <option value="ALIVE">
+                    ALIVE
+                </option>
+
+                <option value="DEAD">
+                    DEAD
+                </option>
+
+            </select>
+
+            <button type="submit">
+                Add Check-in
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>Check-in History</h3>
+
+        <button onclick="loadCheckins()">
+            Load Check-ins
+        </button>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Tree ID</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="checkinTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= REPORTS ================= -->
+
+<section id="reports" class="section">
+
+    <div class="section-title">
+
+        <h2>📊 Reports</h2>
+
+        <p>
+            View tree survival and volunteer information
+        </p>
+
+    </div>
+
+
+    <!-- Survival Rate -->
+
+    <div class="card report-card">
+
+        <h3>🌳 Survival Rate</h3>
+
+        <p>
+            Enter a plantation drive ID
+        </p>
+
+        <div class="report-input">
+
+            <input
+                    type="number"
+                    id="survivalDriveId"
+                    placeholder="Drive ID"
+            >
+
+            <button onclick="getSurvivalRate()">
+                Check
+            </button>
+
+        </div>
+
+        <div
+                id="survivalResult"
+                class="result"
+        >
+            --
+        </div>
+
+    </div>
+
+
+    <!-- Due Check-in -->
+
+    <div class="card report-card">
+
+        <h3>📅 Trees Due for Check-in</h3>
+
+        <button onclick="loadDueTrees()">
+            Check Due Trees
+        </button>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Species</th>
+                    <th>Location</th>
+                    <th>Next Check-in</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="dueTreeTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- Leaderboard -->
+
+    <div class="card report-card">
+
+        <h3>🏆 Volunteer Leaderboard</h3>
+
+        <button onclick="loadLeaderboard()">
+            Load Leaderboard
+        </button>
+
+        <ol id="leaderboard">
+        </ol>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MESSAGE ================= -->
+
+<div id="messageBox"></div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <h3>🌱 GreenLog</h3>
+
+    <p>
+        Tree Plantation Drive Tracker
+    </p>
+
+    <p>
+        Built using Java • Spring Boot • MySQL • REST API
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
