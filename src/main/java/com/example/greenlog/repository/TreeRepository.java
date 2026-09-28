@@ -2,6 +2,7 @@ package com.example.greenlog.repository;
 
 import com.example.greenlog.model.PlantationDrive;
 import com.example.greenlog.model.Tree;
+import com.example.greenlog.model.Volunteer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,5 +16,6 @@ public interface TreeRepository
 
     List<Tree> findByNextCheckInDateLessThanEqual(
             LocalDate date);
+    long countByVolunteer(Volunteer volunteer);
 }
 
