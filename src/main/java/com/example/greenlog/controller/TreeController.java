@@ -46,4 +46,16 @@ public class TreeController {
 
         return "Tree deleted successfully";
     }
+
+    @GetMapping("/reports/survival-rate/{driveId}")
+    public double getSurvivalRate(
+            @PathVariable Long driveId) {
+
+        return treeService.getSurvivalRate(driveId);
+    }
+    @GetMapping("/reports/due-for-checkin")
+    public List<Tree> getTreesDueForCheckIn() {
+
+        return treeService.getTreesDueForCheckIn();
+    }
 }
